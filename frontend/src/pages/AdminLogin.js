@@ -16,8 +16,8 @@ const AdminLogin = () => {
 
     const data = await response.json();
     if (response.status === 200) {
+      toast.success(data.message)
       setTimeout(() => {
-        toast.success(data.message)
         window.location.href = '/admin-dashboard';
       }, 2000)
     }
