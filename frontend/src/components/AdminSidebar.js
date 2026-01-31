@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import '../styles/admin.css'
 import { Link } from 'react-router-dom'
-import { FaEdit, FaSearch, FaThLarge, FaUsers } from 'react-icons/fa'
+import {  FaChevronDown, FaChevronUp, FaEdit, FaFile, FaList, FaSearch, FaStar, FaThLarge, FaUsers } from 'react-icons/fa'
 
 const AdminSidebar = () => {
 
@@ -27,7 +27,7 @@ const AdminSidebar = () => {
         <Link className='list-group-item border-0 list-group-item-action bg-dark text-white'><FaUsers className='icon-fix' /> Reg Users
         </Link>
         <button onClick={() => toggleMenu('category')} className='list-group-item border-0 list-group-item-action bg-dark text-white'>
-          <FaEdit className='icon-fix' /> Food Category
+          <FaEdit className='icon-fix' /> Food Category {opneMenu.category ? <FaChevronUp/>: <FaChevronDown/>}
         </button>
         {opneMenu.category && (
           <div className='ps-4'>
@@ -41,7 +41,7 @@ const AdminSidebar = () => {
         )}
 
         <button onClick={() => toggleMenu('food')} className='list-group-item  border-0 list-group-item-action bg-dark text-white'>
-          <FaEdit className='icon-fix' /> Food Item
+          <FaEdit className='icon-fix' /> Food Item {opneMenu.food ? <FaChevronUp/>: <FaChevronDown/>}
         </button>
         {opneMenu.food && (
           <div className='ps-4'>
@@ -54,9 +54,35 @@ const AdminSidebar = () => {
           </div>
         )}
 
+        <button onClick={() => toggleMenu('orders')} className='list-group-item  border-0 list-group-item-action bg-dark text-white'>
+          <FaList className='icon-fix' /> Food Orders {opneMenu.orders ? <FaChevronUp/>: <FaChevronDown/>}
+        </button>
+        {opneMenu.orders && (
+          <div className='ps-4'>
+            <Link className='list-group-item list-group-item-action border-0  bg-dark text-white'>
+              Not Confirmed
+            </Link >
+            <Link className='list-group-item list-group-item-action border-0 bg-dark text-white'>
+              Confirmend
+            </Link>
+            <Link className='list-group-item list-group-item-action border-0 bg-dark text-white'>
+              Being Prepared
+            </Link>
+            <Link className='list-group-item list-group-item-action border-0 bg-dark text-white'>
+              Food Delivered
+            </Link>
+            <Link className='list-group-item list-group-item-action border-0 bg-dark text-white'>
+              Food Cancelled
+            </Link>
+            <Link className='list-group-item list-group-item-action border-0 bg-dark text-white'>
+              All Orders
+            </Link>
+          </div>
+        )}
 
+         <Link className='list-group-item list-group-item-action bg-dark text-white border-0 '><FaFile className='icon-fix' /> B/w Dates Report</Link>
         <Link className='list-group-item list-group-item-action bg-dark text-white border-0 '><FaSearch className='icon-fix' /> Search</Link>
-        <Link className='list-group-item list-group-item-action bg-dark text-white border-0 '><FaThLarge className='icon-fix' /> Manage Review</Link>
+        <Link className='list-group-item list-group-item-action bg-dark text-white border-0 '><FaStar className='icon-fix' /> Manage Review</Link>
 
       </div>
 

@@ -12,13 +12,19 @@
 
 .list-group-item:hover{
     background-color: #1a1a1a !important;
-    color: rgb(175, 81, 81) !important;
+    color: rgb(220, 60, 60) !important;
 
 }
 
-#page-content-wrapper{
+#page-content-wrapper.width-sidebar{
     margin-left:255px;
     margin-right: 5px;
     width: 100%;
+    transition: margin-left 0.3s ease;
 
+}
+
+#page-content-wrapper.full-width{
+  margin-left: 0px;
+      transition: margin-left 0.3s ease;
 }
