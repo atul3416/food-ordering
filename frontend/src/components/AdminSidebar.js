@@ -31,7 +31,7 @@ const AdminSidebar = () => {
         </button>
         {opneMenu.category && (
           <div className='ps-4'>
-            <Link className='list-group-item list-group-item-action border-0 bg-dark text-white'>
+            <Link to='/add-category' className='list-group-item list-group-item-action border-0 bg-dark text-white'>
               Add Category
             </Link >
             <Link className='list-group-item list-group-item-action border-0  bg-dark text-white'>
