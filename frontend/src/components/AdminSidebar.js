@@ -34,7 +34,7 @@ const AdminSidebar = () => {
             <Link to='/add-category' className='list-group-item list-group-item-action border-0 bg-dark text-white'>
               Add Category
             </Link >
-            <Link className='list-group-item list-group-item-action border-0  bg-dark text-white'>
+            <Link to='/manage-category' className='list-group-item list-group-item-action border-0  bg-dark text-white'>
               Manage Category
             </Link>
           </div>

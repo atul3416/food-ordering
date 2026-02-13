@@ -20,3 +20,13 @@ def add_category(request):
     category_name = request.data.get('category_name')
     Category.objects.create(category_name = category_name)
     return Response({"message": "Category added successfully"},status=201)
+
+from .serializers import *
+@api_view(['GET'])
+def list_categories(request):
+    categories = Category.objects.all()
+    serializer = CategorySerializer(categories,many=True)
+    return Response(serializer.data)
+    
+
+
