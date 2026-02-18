@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view , parser_classes
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from .models import *
@@ -30,3 +30,20 @@ def list_categories(request):
     
 
 
+from rest_framework.parsers import MultiPartParser, FormParser
+
+@api_view(['POST'])
+@parser_classes([MultiPartParser,FormParser])
+def add_food_item(request):
+    serializer = FoodSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({"message": "Food Item has been added successfully"},status=201)
+    return Response({"message": "Somethign went wrong"},status=400)
+
+
+@api_view(['GET'])
+def list_foods(request):
+    foods = Food.objects.all()
+    serializer = FoodSerializer(foods,many=True)
+    return Response(serializer.data)
