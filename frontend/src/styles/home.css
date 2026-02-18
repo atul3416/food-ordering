@@ -1,0 +1,25 @@
+.hero{
+    min-height: 550px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+@media (max-width:768px){
+    .hero{
+        min-height: 300px;
+    }
+}
+
+input::placeholder{
+    font-style: italic;
+}
+
+.hover-effect:hover{
+    transform: scale(1.02);
+    transition: 0.1s ease;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.5);
+}

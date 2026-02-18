@@ -45,10 +45,10 @@ const AdminSidebar = () => {
         </button>
         {opneMenu.food && (
           <div className='ps-4'>
-            <Link className='list-group-item list-group-item-action border-0  bg-dark text-white'>
+            <Link to='/add-food' className='list-group-item list-group-item-action border-0  bg-dark text-white'>
               Add Food Item
             </Link >
-            <Link className='list-group-item list-group-item-action border-0 bg-dark text-white'>
+            <Link to='/manage-food' className='list-group-item list-group-item-action border-0 bg-dark text-white'>
               Manage Food item
             </Link>
           </div>
