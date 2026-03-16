@@ -17,7 +17,7 @@ const SearchPage = () => {
     return (
         <PublicLayout>
             <div className='container py-3 '>
-                <h3 className='text-center'>Results for: burger </h3>
+                <h3 className='text-center'>Results for: {query} </h3>
                 <div className='row mt-4'>
                     {foods.length == 0 ? (<p className='text-center'>No Foods Found!</p>) : (
                         foods.map((food,index) => (
@@ -32,7 +32,14 @@ const SearchPage = () => {
                                     <p className='card-text text-muted'>{food.item_description?.slice(0,40)}... </p>
                                     <div className='d-flex justify-content-between align-items-center'>
                                         <span className='fw-bold' >Rs. {food.price}</span>
-                                        <Link to="#" className='btn btn-outline-primary btn-sm'><i className='fas fa-shopping-basket me-1'></i> Order Now</Link>
+                                        {food.is_available ?(
+                                            <Link to="#" className='btn btn-outline-primary btn-sm'><i className='fas fa-shopping-basket me-1'></i> Order Now</Link>
+                                        ) : (
+                                            <div title='This food iteam is not available right now.'>
+                                                <button className='btn btn-outline-secondary btn-sm'><i className='fas fa-times-circle me-1'></i> Currently Unavailable</button>
+                                            </div>
+                                        ) }
+                                        
                                     </div>
 
                                 </div>
