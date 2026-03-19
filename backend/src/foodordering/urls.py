@@ -8,5 +8,6 @@ urlpatterns = [
     path('add-food-item/',add_food_item, name="add_food_item"),
     path('foods/',list_foods,name="list_foods"),
     path('food_search/',food_search,name="food_search"),
-    path('random_foods/',random_foods)
+    path('random_foods/',random_foods),
+    path('register/',register_user)
 ]
