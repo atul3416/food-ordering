@@ -78,3 +78,23 @@ def register_user(request):
         return Response({"message": "Email or Mobile no are already register"},status=400)
     User.objects.create(first_name = f_name, last_name = l_name, email = email , mobile = mobile, password = make_password(password))
     return Response({"message": "User registered successfully"},status=201)
+
+from django.db.models import Q
+from django.contrib.auth.hashers import check_password
+@api_view(['POST'])
+def login_user(request):
+    identity = request.data.get('emailcont')
+    password = request.data.get('password')
+    try:
+        if identity.isdigit():
+            user = User.objects.filter(mobile=int(identity)).first()
+        else:
+            user = User.objects.filter(email=identity).first()
+        if check_password(password,user.password):
+            return Response({"message": "Login Successfull","userId": user.id, "userName" : f"{user.first_name} {user.last_name}"},status=200)
+        else:
+            return Response({"message": "Invalid Crediatials"}, status=401)
+    except:
+         return Response({"message": "Invalid Crediatials"}, status=401)
+    
+    
