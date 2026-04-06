@@ -98,3 +98,10 @@ def login_user(request):
          return Response({"message": "Invalid Crediatials"}, status=401)
     
     
+@api_view(['GET'])
+def food_detail(request,id):
+    food = Food.objects.get(id=id)
+    serializer = FoodSerializer(food)
+    return Response(serializer.data)
+
+

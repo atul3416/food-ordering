@@ -47,7 +47,7 @@ const Home = () => {
                       <div className='d-flex justify-content-between align-items-center'>
                         <span className='fw-bold' >Rs. {food.price}</span>
                         {food.is_available ? (
-                          <Link to="#" className='btn btn-outline-primary btn-sm'><i className='fas fa-shopping-basket me-1'></i> Order Now</Link>
+                          <Link to={`/food/${food.id}`} className='btn btn-outline-primary btn-sm'><i className='fas fa-shopping-basket me-1'></i> Order Now</Link>
                         ) : (
                           <div title='This food iteam is not available right now.'>
                             <button className='btn btn-outline-secondary btn-sm'><i className='fas fa-times-circle me-1'></i> Currently Unavailable</button>

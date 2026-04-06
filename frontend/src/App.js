@@ -9,6 +9,7 @@ import ManageFood from './pages/ManageFood';
 import SearchPage from './pages/SearchPage';
 import Register from './components/Register';
 import Login from './components/Login';
+import FoodDetail from './pages/FoodDetail';
 function App() {
   return (
     <BrowserRouter>
@@ -24,6 +25,7 @@ function App() {
         <Route path='search/' element={<SearchPage/>}></Route>
         <Route path='register/' element={<Register/>}></Route>
         <Route path='login/' element={<Login/>}></Route>
+        <Route path='food/:id' element={<FoodDetail/>}></Route>
       </Route>
     </Routes>
     </BrowserRouter>
