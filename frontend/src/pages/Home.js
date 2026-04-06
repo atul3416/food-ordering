@@ -67,8 +67,40 @@ const Home = () => {
         </div>
 
       </section>
+      <section className='py-5 bg-dark text-white'>
+        <div className='container text-center'>
+          <h2>Ordering in 3 Simple Steps</h2>
+          <div className='row mt-4'>
+            <div className='col-md-4'>
+              <h4>1. Pick a dish you love</h4>
+              <p>Explore hundreds of mouth watering options and choose whay you crave!</p>
+            </div>
+            <div className='col-md-4'>
+              <h4>2. Share your location</h4>
+              <p>Tell us where you are, and we'll handle the rest.</p>
+            </div>
+            <div className='col-md-4'>
+              <h4>3. Enjoy Doorstep Delivery</h4>
+              <p>Relax while your meal arrives fast and fresh - pay when it's delivered!</p>
+            </div>
+
+          </div>
+          <p>Pay easily with Cash on Delivery - hassel-free</p>
 
 
+
+        </div>
+
+
+      </section>
+
+
+      <section className='py-5 bg-warning text-center text-dark'>
+        <h4>Ready to Satify your hunger?</h4>
+        <Link to="#" className='btn btn-dark btn-lg mt-4'>
+        Browse Full Menu
+        </Link>
+      </section>
 
 
     </PublicLayout>
