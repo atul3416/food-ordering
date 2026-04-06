@@ -3,13 +3,13 @@ import { FaHome, FaPlus, FaSignInAlt, FaTruck, FaUserPlus, FaUserShield, FaUtens
 import { Link } from 'react-router-dom'
 import PublicLayout from '../components/PublicLayout'
 import { useParams, useNavigate } from 'react-router-dom'
-
-
+import {toast, ToastContainer} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 const FoodDetail = () => {
     const userId = localStorage.getItem("userId");
     const [food, setFood] = useState(null);
     const { id } = useParams();
-
+    const navigate = useNavigate();
     useEffect(() => {
 
         fetch(`http://127.0.0.1:8000/api/food/${id}`)
@@ -19,6 +19,34 @@ const FoodDetail = () => {
             })
 
     }, []);
+
+    const handleAddToCart = async ()=>{
+        if(!userId){
+            navigate('/login')
+        }
+
+        try{
+            const response = await fetch('http://127.0.0.1:8000/api/cart/add/',{
+                method: 'POST',
+                headers : { 'Content-Type': 'application/json'},
+                body : JSON.stringify({
+                    userId: userId,
+                    foodId : food.id
+                })
+            })
+            const result = await response.json();
+
+            if(response.status === 200){
+                toast.success(result.message || 'Item added to card')
+            }
+            else{
+                toast.error(result.message || 'Something went wrong')
+            }
+        }
+        catch(error){
+            toast.error("Error connecting server");
+        }
+    }
 
     if (!food) return <div>Loading...</div>
     return (
@@ -37,7 +65,7 @@ const FoodDetail = () => {
                         <p className='mt-3'>Shipping : <strong>Free</strong></p>
 
                         {food.is_available ? (
-                            <button className='btn btn-outline-primary btn-sm'><i className='fas fa-cart-plus me-1'></i> Add to Cart</button>
+                            <button className='btn btn-outline-primary btn-sm' onClick={handleAddToCart}><i className='fas fa-cart-plus me-1'></i> Add to Cart</button>
                         ) : (
                             <div title='This food iteam is not available right now.'>
                                 <button className='btn btn-outline-secondary btn-sm'><i className='fas fa-times-circle me-1'></i> Currently Unavailable</button>
@@ -49,6 +77,7 @@ const FoodDetail = () => {
                 </div>
 
             </div>
+            <ToastContainer/>
         </PublicLayout>
     )
 }

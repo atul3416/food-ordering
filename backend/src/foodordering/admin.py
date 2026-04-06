@@ -4,4 +4,5 @@ from .models import *
 admin.site.register(User)
 admin.site.register(Food)
 admin.site.register(Category)
+admin.site.register(Order)
 # Register your models here.
