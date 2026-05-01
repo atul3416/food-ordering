@@ -38,6 +38,9 @@ const FoodDetail = () => {
 
             if(response.status === 200){
                 toast.success(result.message || 'Item added to card')
+                setTimeout(() => {
+                    navigate('/cart')
+                }, 2000);
             }
             else{
                 toast.error(result.message || 'Something went wrong')

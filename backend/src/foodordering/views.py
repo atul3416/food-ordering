@@ -125,8 +125,8 @@ def add_to_cart(request):
         # if not created :
         #     order.quantity += 1
         #     order.save()
-        if Order.objects.filter(user = user).exists():
-            order = Order.objects.get(user = user)
+        if Order.objects.filter(user = user, food=food, is_order_placed = False).exists():
+            order = Order.objects.get(user = user, food=food, is_order_placed = False)
             order.quantity += 1
             order.save()
         else:
@@ -140,3 +140,11 @@ def add_to_cart(request):
         return Response({"message":"Food added to card successfully"},status=200) #status 200 is for everthing is ok 
     except:
         return Response({"message":"Something went wr"},status=401) #401 is for unauthorized
+    
+
+
+@api_view(['GET'])
+def get_cart_items(request,user_id):
+    orders = Order.objects.filter(user_id = user_id,is_order_placed=False).select_related('food')
+    serializer = CartOrderSerializer(orders,many=True)
+    return Response(serializer.data)
