@@ -67,6 +67,7 @@ class FoodTracking(models.Model):
     def __str__(self):
         return f"{self.order.order_number} - {self.status}"
     
+
 class PaymentDetail(models.Model):
     PAYMENT_CHOICES = [
         ('COD', 'Cash on Delivery'),
@@ -108,3 +109,5 @@ class Wishlist(models.Model):
     def __str__(self):
         return f"{self.user.first_name} {self.food.item_name}"
     
+
+
