@@ -26,7 +26,7 @@ const PaymentPage = () => {
             if (!cardNumber || !expiry || !cvv) {
                 alert("Pleae fill in all card details");
             }
-
+        }
             try {
                 const response = await fetch('http://127.0.0.1:8000/api/place_order/', {
                     method: 'POST',
@@ -57,7 +57,7 @@ const PaymentPage = () => {
                 console.error(error);
                 toast.error("Error connecting to server");
             }
-        }
+        
 
     }
 
@@ -107,7 +107,7 @@ const PaymentPage = () => {
                             </div>
                         </div>
                     )}
-                    <button className='btn btn-success mt-4 w-100'><i className='fas fa-check-circle me-2'></i>Confirm & Place Order</button>
+                    <button onClick={handlePlaceOrder} className='btn btn-success mt-4 w-100'><i className='fas fa-check-circle me-2'></i>Confirm & Place Order</button>
                 </div>
 
             </div>
