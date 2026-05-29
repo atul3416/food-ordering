@@ -19,7 +19,10 @@ const PaymentPage = () => {
 
 
     const handlePlaceOrder = async () => {
-
+        if(paymentMode === ''){
+            alert("Select Payment method")
+            return
+        }
         if (paymentMode === 'online') {
             const { cardNumber, expiry, cvv } = cardDetails;
 

@@ -21,3 +21,36 @@ class CartOrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['id','food','quantity']
+
+
+class MyOrdersListSerializer(serializers.ModelSerializer):
+    order_final_status = serializers.SerializerMethodField()
+    class Meta:
+        model = OrderAddress
+        fields = ['order_number', 'order_time', 'order_final_status']
+    def get_order_final_status(self, obj):
+        return obj.order_final_status or "Wait for Restaurant confirmation"
+    
+
+class OrderSerializer(serializers.ModelSerializer):
+    food = FoodSerializer()
+    class Meta:
+        model = Order
+        fields = ['food','quantity']
+
+    
+
+class OrderAddressSerializer(serializers.ModelSerializer):
+    payment_mode = serializers.SerializerMethodField()
+    class Meta:
+        model = OrderAddress
+        fields = ['order_number','address','payment_mode', 'order_time', 'order_final_status']
+
+
+    def get_payment_mode(self, obj):
+        try:
+            payment = PaymentDetail.objects.get(order_number = obj.order_number)
+            return payment.payment_mode
+        except: 
+            return None
+    
