@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice #{{order_number}}</title>
+    <style>
+        .invoice{border: 2px solid black; width: 70%;}
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        h2 {
+            margin-bottom: 2px;
+        }
+
+        table {
+            width: 95%;
+            border-collapse: collapse;
+            margin: auto;
+            
+    
+            /* Removes space between borders */
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+            /* Zebra stripes */
+        }
+
+        tr:hover {
+            background-color: #ddd;
+            /* Hover effect */
+        }
+
+        th {
+            background-color: #04AA6D;
+            color: white;
+        }
+        .header-invoice{margin-left: 10px; margin-top: 10px;}
+    </style>
+</head>
+
+<body>
+    <div class="invoice">
+        <div class="header-invoice">
+            <button onclick="window.print()">print</button>
+            <h2>Invoice for Order #{{order_number}}</h2>
+            <p><strong>Date: </strong> {{address.order_time}}</p>
+            <p><strong>Address: </strong> {{address.address}}</p>
+            <hr>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Sr.No</th>
+                    <th>Food Item</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in order_data %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{order.food.item_name}}</td>
+                    <td>{{order.food.price}}</td>
+                    <td>{{order.quantity}}</td>
+                </tr>
+                {% endfor %}
+                
+            </tbody>
+        </table>
+        <div style="margin-top:30px; margin-left: 10px; margin-bottom: 5px;"><strong>Total: </strong>₹git{{grandTotal}}</div>
+    </div>
+
+
+
+</body>
+
+</html>

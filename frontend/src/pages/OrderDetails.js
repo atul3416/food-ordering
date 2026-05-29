@@ -67,7 +67,7 @@ const OrderDetails = () => {
                                 <p><strong>Payment Mode: </strong><span className='badge bg-info text-dark ms-2'>{orderAddress.payment_mode}</span></p>
                                 <p><strong>Total Amount: </strong>₹ {total}</p>
 
-                                <a href='' target='_blank' className='btn btn-primary w-100 my-2'>
+                                <a href={`http://127.0.0.1:8000/api/invoice/${order_number}`} target='_blank' className='btn btn-primary w-100 my-2'>
                                     <i className='fas fa-file-invoice me-2'></i>Invoice
                                 </a>
 
