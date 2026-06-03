@@ -260,3 +260,32 @@ def get_invoice(request,order_number):
         'grandTotal' : grandTotal
     })
         
+@api_view(['GET'])
+def get_user_profile(request, user_id):
+    user = User.objects.get(id = user_id)
+    serializers = UserSerializer(user)
+    return Response(serializers.data)
+
+
+@api_view(['PUT'])
+def update_user_profile(request,user_id):
+    user = User.objects.get(id=user_id)
+    serializers = UserSerializer(user,data=request.data, partial=True)
+    if serializers.is_valid():
+        serializers.save()
+        return Response({"message":"Profile Updated Successfully"}, status=200)
+    return Response(serializers.error, status=400)
+
+
+@api_view(['POST'])
+def change_password(request, user_id):
+    user = User.objects.get(id = user_id)
+    current_pass = request.data.get('current_password')
+    new_pass = request.data.get('new_password')
+
+    if not check_password(current_pass, user.password):
+        return Response({"message":"Current password is incorrect"}, status = 400)
+    
+    user.password = make_password(new_pass)
+    user.save()
+    return Response({"message":"Password changed successfully"}, status = 200)

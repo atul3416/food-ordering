@@ -54,3 +54,8 @@ class OrderAddressSerializer(serializers.ModelSerializer):
         except: 
             return None
     
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'

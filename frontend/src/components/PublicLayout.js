@@ -74,8 +74,8 @@ const PublicLayout = ({ children }) => {
                      <FaUserCircle className='me-1'/> {uName}
                     </a>
                     <ul class="dropdown-menu">
-                      <li><Link class="dropdown-item" ><FaUser className='me-1'/>Profile</Link></li>
-                      <li><Link class="dropdown-item" ><FaCogs className='me-1'/>Settings</Link></li>
+                      <li><Link class="dropdown-item" to="/profile" ><FaUser className='me-1'/>Profile</Link></li>
+                      <li><Link class="dropdown-item" to='/change-password' ><FaCogs className='me-1'/>Settings</Link></li>
                       <li><hr class="dropdown-divider"/></li>
                       <li><button class="dropdown-item" onClick={handleLogout} ><FaSignOutAlt className='me-1'/>Logout</button></li>
                     </ul>
