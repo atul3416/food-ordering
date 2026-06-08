@@ -289,3 +289,108 @@ def change_password(request, user_id):
     user.password = make_password(new_pass)
     user.save()
     return Response({"message":"Password changed successfully"}, status = 200)
+
+
+@api_view(['GET'])
+def order_not_confirmed(request):
+    order = OrderAddress.objects.filter(order_final_status__isnull=True).order_by('-order_time')
+    serializers = OrderSummarySerializer(order, many=True)
+    return Response(serializers.data)
+
+
+@api_view(['GET'])
+def order_confirmed(request):
+    order = OrderAddress.objects.filter(order_final_status = "Order Confirmed").order_by('-order_time')
+    serializers = OrderSummarySerializer(order, many=True)
+    return Response(serializers.data)
+
+@api_view(['GET'])
+def order_inProgress(request):
+    order = OrderAddress.objects.filter(order_final_status = "Food being Prepared").order_by('-order_time')
+    serializers = OrderSummarySerializer(order, many=True)
+    return Response(serializers.data)
+
+
+@api_view(['GET'])
+def order_pickedup(request):
+    order = OrderAddress.objects.filter(order_final_status = 'Order Pickup').order_by('-order_time')
+    serializers = OrderSummarySerializer(order, many=True)
+    return Response(serializers.data)
+
+@api_view(['GET'])
+def order_delivered(request):
+    order = OrderAddress.objects.filter(order_final_status = 'Order Delivered').order_by('-order_time')
+    serializers = OrderSummarySerializer(order, many=True)
+    return Response(serializers.data)
+
+@api_view(['GET'])
+def order_cancelled(request):
+    order = OrderAddress.objects.filter(order_final_status = 'Order Cancelled').order_by('-order_time')
+    serializers = OrderSummarySerializer(order, many=True)
+    return Response(serializers.data)
+
+
+@api_view(['GET'])
+def all_orders(request):
+    order = OrderAddress.objects.all().order_by('-order_time')
+    serializers = OrderSummarySerializer(order, many=True)
+    return Response(serializers.data)
+
+@api_view(['POST'])
+def order_bw_dates(request):
+    from_date = request.data.get('fromDate')
+    to_date = request.data.get('toDate')
+    status = request.data.get('status')
+    orders = OrderAddress.objects.filter(order_time__date__range = [from_date,to_date])
+    if status == 'Not Confirmed':
+        orders = orders.filter(order_final_status__isnull = True)
+    elif status != 'all':
+        orders = orders.filter(order_final_status = status)
+    
+    serializers = OrderSummarySerializer(orders.order_by('-order_time'),many = True)
+    return Response(serializers.data, status=200)
+
+
+@api_view(['POST'])
+def order_bw_dates(request):
+    from_date = request.data.get('fromDate')
+    to_date = request.data.get('toDate')
+    status = request.data.get('status')
+    orders = OrderAddress.objects.filter(order_time__date__range = [from_date,to_date])
+    if status == 'Not Confirmed':
+        orders = orders.filter(order_final_status__isnull = True)
+    elif status != 'all':
+        orders = orders.filter(order_final_status = status)
+    
+    serializers = OrderSummarySerializer(orders.order_by('-order_time'),many = True)
+    return Response(serializers.data, status=200)
+
+
+@api_view(['POST'])
+def order_bw_dates(request):
+    from_date = request.data.get('fromDate')
+    to_date = request.data.get('toDate')
+    status = request.data.get('status')
+    orders = OrderAddress.objects.filter(order_time__date__range = [from_date,to_date])
+    if status == 'Not Confirmed':
+        orders = orders.filter(order_final_status__isnull = True)
+    elif status != 'all':
+        orders = orders.filter(order_final_status = status)
+    
+    serializers = OrderSummarySerializer(orders.order_by('-order_time'),many = True)
+    return Response(serializers.data, status=200)
+
+
+@api_view(['GET'])
+def view_order_detail(request,order_no):
+    try:   
+        order_address = OrderAddress.objects.select_related('user').get(order_number =  order_no)
+        ordered_food = Order.objects.filter(order_number = order_no).select_related('food')
+        tracking = FoodTracking.objects.filter(order__order_number = order_no)
+    except:
+        return Response({"error":"Something went wrong"}, status = 404)
+    return Response({
+        'order': OrderDetailSerializer(order_address).data,
+        'food': OrderFoodSerializer(ordered_food, many=True).data,
+        'tracking': FoodTrackingSerializer(tracking, many=True).data
+    })

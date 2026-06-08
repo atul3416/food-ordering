@@ -16,6 +16,14 @@ import MyOrders from './pages/MyOrders';
 import OrderDetails from './pages/OrderDetails';
 import Profile from './pages/Profile';
 import ChangePass from './pages/ChangePass';
+import OrderNotConfirmed from './pages/OrderNotConfirmed';
+import OrderConfirmed from './pages/OrderConfirmed';
+import OrderPickup from './pages/OrderPickup';
+import OrderDelivered from './pages/OrderDelivered';
+import OrderCancelled from './pages/OrderCancelled';
+import OrderPrepared from './pages/OrderPrepared';
+import OrderReport from './pages/OrderReport';
+import ViewFoodOrder from './pages/ViewFoodOrder';
 function App() {
   return (
     <BrowserRouter>
@@ -26,6 +34,14 @@ function App() {
         <Route path='admin-dashboard/' element={<AdminDashboard/>}></Route>
         <Route path='add-category/' element={<AddCategory/>}></Route>
         <Route path='manage-category/' element={<ManageCategory/>}></Route>
+        <Route path='order-not-confirmed/' element={<OrderNotConfirmed/>}></Route>
+        <Route path='orders-confirmed/' element={<OrderConfirmed/>}></Route>
+        <Route path='orders-pickup/' element={<OrderPickup/>}></Route>
+        <Route path='orders-cancelled/' element={<OrderCancelled/>}></Route>
+        <Route path='orders-prepared/' element={<OrderPrepared/>}></Route>
+        <Route path='orders-delivered/' element={<OrderDelivered/>}></Route>
+        <Route path='orders-report/' element={<OrderReport/>}></Route>
+        <Route path='admin-view-order-detail/:orderNumber/' element={<ViewFoodOrder/>}></Route>
         <Route path='add-food/' element={<AddFood/>}></Route>
         <Route path='manage-food/' element={<ManageFood/>}></Route>
         <Route path='search/' element={<SearchPage/>}></Route>
@@ -38,6 +54,7 @@ function App() {
         <Route path='order-details/:order_number/' element={<OrderDetails/>}></Route>
         <Route path='profile/' element={<Profile/>}></Route>
         <Route path='change-password/' element={<ChangePass/>}></Route>
+       
       </Route>
     </Routes>
     </BrowserRouter>

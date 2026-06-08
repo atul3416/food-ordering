@@ -23,5 +23,15 @@ urlpatterns = [
     path('invoice/<str:order_number>/',get_invoice),
     path('user_profile/<int:user_id>/',get_user_profile),
     path('user_profile/update/<int:user_id>/',update_user_profile),
-    path('change_password/<int:user_id>/', change_password)
+    path('change_password/<int:user_id>/', change_password),
+    path('orders-not-confirmed/',order_not_confirmed),
+    path('orders-confirmed/',order_confirmed),
+    path('order-being-prepared/',order_inProgress),
+    path('order-pickup/', order_pickedup),
+    path('orders-delivered/',order_delivered),
+    path('order-cancelled/', order_cancelled),
+    path('all-food/', all_orders),
+    path('order-bw-dates/',order_bw_dates),
+    path('view-order-detail/<str:order_no>/',view_order_detail)
+
 ]

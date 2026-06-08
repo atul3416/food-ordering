@@ -59,3 +59,33 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
+
+class OrderSummarySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderAddress
+        fields = ['id', 'order_time', 'order_number']
+
+class OrderDetailSerializer(serializers.ModelSerializer):
+    user_first_name = serializers.CharField(source = 'user.first_name')
+    user_last_name = serializers.CharField(source = 'user.last_name')
+    user_email = serializers.CharField(source = 'user.email')
+    user_mobile = serializers.CharField(source = 'user.mobile')
+    class Meta:
+        model = OrderAddress
+        fields = ['order_number', 'order_time', 'order_final_status', 'address', 'user_first_name',
+                   'user_last_name','user_email', 'user_mobile']
+        
+
+class OrderFoodSerializer(serializers.ModelSerializer):
+    item_price = serializers.CharField(source = 'food.price')
+    item_name = serializers.CharField(source = 'food.item_name')
+    image = serializers.ImageField(source = 'food.image') 
+    class Meta:
+        model = Order
+        fields = ['item_name', 'item_price', 'image', 'quantity']
+
+
+class FoodTrackingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FoodTracking
+        fields = '__all__'

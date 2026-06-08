@@ -59,19 +59,19 @@ const AdminSidebar = () => {
         </button>
         {opneMenu.orders && (
           <div className='ps-4'>
-            <Link className='list-group-item list-group-item-action border-0  bg-dark text-white'>
+            <Link to='/order-not-confirmed' className='list-group-item list-group-item-action border-0  bg-dark text-white'>
               Not Confirmed
             </Link >
-            <Link className='list-group-item list-group-item-action border-0 bg-dark text-white'>
+            <Link to='/orders-confirmed'  className='list-group-item list-group-item-action border-0 bg-dark text-white'>
               Confirmend
             </Link>
-            <Link className='list-group-item list-group-item-action border-0 bg-dark text-white'>
+            <Link to='/orders-prepared' className='list-group-item list-group-item-action border-0 bg-dark text-white'>
               Being Prepared
             </Link>
-            <Link className='list-group-item list-group-item-action border-0 bg-dark text-white'>
+            <Link to='/orders-delivered' className='list-group-item list-group-item-action border-0 bg-dark text-white'>
               Food Delivered
             </Link>
-            <Link className='list-group-item list-group-item-action border-0 bg-dark text-white'>
+            <Link to='/orders-cancelled' className='list-group-item list-group-item-action border-0 bg-dark text-white'>
               Food Cancelled
             </Link>
             <Link className='list-group-item list-group-item-action border-0 bg-dark text-white'>
@@ -80,7 +80,7 @@ const AdminSidebar = () => {
           </div>
         )}
 
-         <Link className='list-group-item list-group-item-action bg-dark text-white border-0 '><FaFile className='icon-fix' /> B/w Dates Report</Link>
+         <Link to="/orders-report" className='list-group-item list-group-item-action bg-dark text-white border-0 '><FaFile className='icon-fix' /> B/w Dates Report</Link>
         <Link className='list-group-item list-group-item-action bg-dark text-white border-0 '><FaSearch className='icon-fix' /> Search</Link>
         <Link className='list-group-item list-group-item-action bg-dark text-white border-0 '><FaStar className='icon-fix' /> Manage Review</Link>
 
