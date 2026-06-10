@@ -32,6 +32,7 @@ urlpatterns = [
     path('order-cancelled/', order_cancelled),
     path('all-food/', all_orders),
     path('order-bw-dates/',order_bw_dates),
-    path('view-order-detail/<str:order_no>/',view_order_detail)
+    path('view-order-detail/<str:order_no>/',view_order_detail),
+    path('update-order-status/', update_order_status )
 
 ]

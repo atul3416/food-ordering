@@ -394,3 +394,26 @@ def view_order_detail(request,order_no):
         'food': OrderFoodSerializer(ordered_food, many=True).data,
         'tracking': FoodTrackingSerializer(tracking, many=True).data
     })
+
+@api_view(['POST'])
+def update_order_status(request):
+    order_number = request.data.get('order_number')
+    new_status = request.data.get('status')
+    remark = request.data.get('remark')
+
+    try:
+        address = OrderAddress.objects.get(order_number = order_number)
+        order = Order.objects.filter(order_number = order_number).first()
+        if not order:
+            return Response({'error':"Order not found"}, status = 404)
+        FoodTracking.objects.create(
+            order = order,
+            remark = remark,
+            status = new_status,
+            order_cancelled_by_user = False
+        )
+        address.order_final_status = new_status
+        address.save()
+        return Response({'message':'Order status update successfully'})
+    except:
+        return Response({'error':'Invalid order number.'}, status= 400)

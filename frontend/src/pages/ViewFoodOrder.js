@@ -8,6 +8,14 @@ const ViewFoodOrder = () => {
     const naviage = useNavigate();
     const adminUser = localStorage.getItem('adminUser')
     const [data, setData] = useState(null)
+    const statusOptions = [
+        "Order Confirmed",
+        "Food being Prepared",
+        "Order Pickup",
+        "Order Delivered",
+        "Order Cancelled"
+    ]
+
     useEffect(() => {
         if (!adminUser) {
             naviage('/admin-login');
@@ -23,6 +31,9 @@ const ViewFoodOrder = () => {
     if (!data) return <AdminLayout><p className='text-center mt-5'>Loading.....</p></AdminLayout>
 
     const { order, food, tracking } = data;
+    const currenStatus = order.order_final_status || "";
+
+    const visibleOptions = statusOptions.slice(statusOptions.indexOf(currenStatus) + 1)
 
     return (
         <AdminLayout>
@@ -85,20 +96,74 @@ const ViewFoodOrder = () => {
                             {tracking.length == 0 ? (
                                 <tr><td colSpan="4" className='text-center'> No tracking history yet</td></tr>
                             ) : (
-                                
-                                    tracking.map((track, index) => (
-                                        <tr key={index}>
-                                            <td>{index + 1}</td>
-                                            <td>{track.status}</td>
-                                            <td>{track.remark}</td>
-                                            <td>{track.status_date}</td>
-                                        </tr>
-                                    ))
-                                
+
+                                tracking.map((track, index) => (
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>{track.status}</td>
+                                        <td>{track.remark}</td>
+                                        <td>{new Date(track.status_date).toLocaleString()}</td>
+                                    </tr>
+                                ))
+
                             )}
 
                         </tbody>
                     </table>
+                    {order.order_final_status !== "Order Delivered" && (
+                        <div className='my-4'>
+                            <h5>Update Order Status</h5>
+                            <form onSubmit={(e) => {
+                                e.preventDefault();
+                                const status = e.target.status.value;
+                                const remark = e.target.remark.value;
+
+                                fetch('http://127.0.0.1:8000/api/update-order-status/', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                        order_number: order.order_number,
+                                        status,
+                                        remark
+                                    })
+
+
+                                })
+                                    .then((res) => res.json())
+                                    .then((data) => {
+                                        if (data.message) {
+                                            toast.success(data.message);
+                                            setTimeout(() => window.location.reload(), 1000)
+                                        }
+                                        else {
+                                            toast.error(data.error || "Failed to update status")
+                                        }
+                                    })
+                                    .catch(() => toast.error("Server error"))
+                            }}>
+                                <div className='mb-3'>
+                                    <label>Status</label>
+                                    <select name="status" className='form-control' required>
+                                        <option>---Change Status---</option>
+                                        {visibleOptions.map((stat, index) => (
+                                            <option key={index} value={stat}>{stat}</option>
+                                        ))}
+
+                                    </select>
+
+                                </div>
+
+                                <div className='mb-3'>
+                                    <label>Remark</label>
+                                    <textarea name="remark" className='form-control' rows="3" required />
+                                </div>
+                                <div className='text-center'>
+                                    <button type='submit' className='btn btn-success'>Update Status</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    )}
                 </div>
             </div>
         </AdminLayout>
