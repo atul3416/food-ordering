@@ -417,3 +417,17 @@ def update_order_status(request):
         return Response({'message':'Order status update successfully'})
     except:
         return Response({'error':'Invalid order number.'}, status= 400)
+    
+
+
+@api_view(['GET'])
+def search_orders(request):
+    query = request.GET.get('q','')
+    print(query)
+    if query:
+        orders = OrderAddress.objects.filter(order_number__icontains=query)
+        print(orders)
+    else:
+        orders = []
+    serializer = OrderSummarySerializer(orders,many=True)
+    return Response(serializer.data)

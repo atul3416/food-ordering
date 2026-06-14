@@ -81,7 +81,7 @@ const AdminSidebar = () => {
         )}
 
          <Link to="/orders-report" className='list-group-item list-group-item-action bg-dark text-white border-0 '><FaFile className='icon-fix' /> B/w Dates Report</Link>
-        <Link className='list-group-item list-group-item-action bg-dark text-white border-0 '><FaSearch className='icon-fix' /> Search</Link>
+        <Link  to="/search-order" className='list-group-item list-group-item-action bg-dark text-white border-0 '><FaSearch className='icon-fix' /> Search</Link>
         <Link className='list-group-item list-group-item-action bg-dark text-white border-0 '><FaStar className='icon-fix' /> Manage Review</Link>
 
       </div>
