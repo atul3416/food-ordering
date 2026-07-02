@@ -26,6 +26,8 @@ import OrderReport from './pages/OrderReport';
 import ViewFoodOrder from './pages/ViewFoodOrder';
 import SearchOrder from './pages/SearchOrder';
 import EditCategory from './pages/EditCategory';
+import EditFood from './pages/EditFood';
+import ManageUsers from './pages/ManageUsers';
 function App() {
   return (
     <BrowserRouter>
@@ -47,6 +49,7 @@ function App() {
         <Route path='search-order/' element={<SearchOrder/>}></Route>
         <Route path='edit_category/:id/' element={<EditCategory/>}></Route>
         <Route path='add-food/' element={<AddFood/>}></Route>
+        <Route path='edit-food/:id/' element={<EditFood/>}></Route>
         <Route path='manage-food/' element={<ManageFood/>}></Route>
         <Route path='search/' element={<SearchPage/>}></Route>
         <Route path='register/' element={<Register/>}></Route>
@@ -58,6 +61,7 @@ function App() {
         <Route path='order-details/:order_number/' element={<OrderDetails/>}></Route>
         <Route path='profile/' element={<Profile/>}></Route>
         <Route path='change-password/' element={<ChangePass/>}></Route>
+        <Route path='manage-users/' element={<ManageUsers/>}></Route>
        
       </Route>
     </Routes>

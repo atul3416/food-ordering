@@ -38,9 +38,44 @@ def add_food_item(request):
     serializer = FoodSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
-        return Response({"message": "Food Item has been added successfully"},status=201)
-    return Response({"message": "Somethign went wrong"},status=400)
+        return Response({"message": "Food Item has been added successfully"},status=200)
+    return Response({"message": "Somethign went wrong"},status=404)
 
+
+@api_view(['DELETE'])
+def delete_food(request, id):
+    try:
+        food = Food.objects.get(id=id)
+        food.delete()
+        return Response({"message":"Food deleted succesfully"})
+    except Food.DoesNotExist:
+        return Response({"error":"Food item not found"})
+    
+
+@api_view(['GET','PUT'])
+@parser_classes([MultiPartParser,FormParser])
+def edit_food(request,id):
+    try:
+        food = Food.objects.get(id=id)
+    except Food.DoesNotExist:
+        return Response({'error':'Food Not Found'}, status=404)
+    
+    if request.method == 'GET':
+        serializer = FoodSerializer(food)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        data = request.data.copy()
+        if 'image' not in request.FILES:
+            data['image']= food.image
+        if 'is_available' in data:
+            data['is_available'] = data['is_available'].lower() == 'true'
+        serializer = FoodSerializer(food,data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+        return Response({'message':'Food updated successfully'}, status=200)
+   
+
+    
 
 @api_view(['GET'])
 def list_foods(request):
@@ -434,6 +469,7 @@ def search_orders(request):
 
 
 @api_view(['GET','PUT','DELETE'])
+
 def category_detail(request,id):
     try:
         category = Category.objects.get(id=id)
@@ -451,3 +487,21 @@ def category_detail(request,id):
     elif request.method == 'DELETE':
         category.delete()
         return Response({'message':'Category deleted successfully'}, status=200)
+
+
+
+@api_view(['GET'])
+def list_users(request):
+    users = User.objects.all().order_by('-id')
+    serializer = UserSerializer(users,many=True)
+    return Response(serializer.data)
+
+
+@api_view(['DELETE'])
+def delete_user(request, id):
+    try:
+        user = User.objects.get(id=id)
+        user.delete()
+        return Response({"message":"User deleted succesfully!"}, status=200)
+    except Food.DoesNotExist:
+        return Response({"error":"User not found"}, status=401)

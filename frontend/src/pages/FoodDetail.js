@@ -23,6 +23,7 @@ const FoodDetail = () => {
     const handleAddToCart = async ()=>{
         if(!userId){
             navigate('/login')
+            return;
         }
 
         try{

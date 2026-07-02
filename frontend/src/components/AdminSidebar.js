@@ -15,7 +15,7 @@ const AdminSidebar = () => {
     setopenMenu((prev) => ({ ...prev, [menu]: !prev[menu] }))
   }
   return (
-    <div className='bg-dark text-white sidebar'>
+    <div className='bg-dark text-white sidebar overflow-auto'>
       <div className='text-center p-3 border-bottom'>
         <img src='/images/admin.png' width={100} className='img-fluid mb-2' alt='admin Logo' />
         <h5 className='mb-0'>Admin</h5>
@@ -24,7 +24,7 @@ const AdminSidebar = () => {
       <div className='list-group list-group-flush '>
         <Link className='list-group-item border-0 list-group-item-action bg-dark text-white'><FaThLarge className='icon-fix' /> dashboard
         </Link>
-        <Link className='list-group-item border-0 list-group-item-action bg-dark text-white'><FaUsers className='icon-fix' /> Reg Users
+        <Link to='/manage-users' className='list-group-item border-0 list-group-item-action bg-dark text-white'><FaUsers className='icon-fix' /> Reg Users
         </Link>
         <button onClick={() => toggleMenu('category')} className='list-group-item border-0 list-group-item-action bg-dark text-white'>
           <FaEdit className='icon-fix' /> Food Category {opneMenu.category ? <FaChevronUp/>: <FaChevronDown/>}
