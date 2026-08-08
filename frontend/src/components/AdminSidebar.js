@@ -22,7 +22,7 @@ const AdminSidebar = () => {
       </div>
 
       <div className='list-group list-group-flush '>
-        <Link className='list-group-item border-0 list-group-item-action bg-dark text-white'><FaThLarge className='icon-fix' /> dashboard
+        <Link to="/admin-dashboard" className='list-group-item border-0 list-group-item-action bg-dark text-white'><FaThLarge className='icon-fix' /> dashboard
         </Link>
         <Link to='/manage-users' className='list-group-item border-0 list-group-item-action bg-dark text-white'><FaUsers className='icon-fix' /> Reg Users
         </Link>

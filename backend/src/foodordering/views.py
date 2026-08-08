@@ -371,35 +371,6 @@ def all_orders(request):
     serializers = OrderSummarySerializer(order, many=True)
     return Response(serializers.data)
 
-@api_view(['POST'])
-def order_bw_dates(request):
-    from_date = request.data.get('fromDate')
-    to_date = request.data.get('toDate')
-    status = request.data.get('status')
-    orders = OrderAddress.objects.filter(order_time__date__range = [from_date,to_date])
-    if status == 'Not Confirmed':
-        orders = orders.filter(order_final_status__isnull = True)
-    elif status != 'all':
-        orders = orders.filter(order_final_status = status)
-    
-    serializers = OrderSummarySerializer(orders.order_by('-order_time'),many = True)
-    return Response(serializers.data, status=200)
-
-
-@api_view(['POST'])
-def order_bw_dates(request):
-    from_date = request.data.get('fromDate')
-    to_date = request.data.get('toDate')
-    status = request.data.get('status')
-    orders = OrderAddress.objects.filter(order_time__date__range = [from_date,to_date])
-    if status == 'Not Confirmed':
-        orders = orders.filter(order_final_status__isnull = True)
-    elif status != 'all':
-        orders = orders.filter(order_final_status = status)
-    
-    serializers = OrderSummarySerializer(orders.order_by('-order_time'),many = True)
-    return Response(serializers.data, status=200)
-
 
 @api_view(['POST'])
 def order_bw_dates(request):
@@ -505,3 +476,41 @@ def delete_user(request, id):
         return Response({"message":"User deleted succesfully!"}, status=200)
     except Food.DoesNotExist:
         return Response({"error":"User not found"}, status=401)
+
+from django.utils.timezone import now, timedelta  
+from django.db.models import Sum,F  
+@api_view(['GET'])
+def dashboard_matrics(request):
+    today = now().date()
+    start_week = today - timedelta(days=today.weekday())
+    start_month = today.replace(day=1)
+    start_year = today.replace(month=1, day=1)
+    
+
+    def get_sales_total(start_date):
+        paid_orders = PaymentDetail.objects.filter(payment_date__gte=start_date).values_list('order_number',flat=True)
+
+        total = Order.objects.filter(order_number__in=paid_orders).annotate(
+            total_price=F('quantity')*F('food__price')
+        ).aggregate(sale_amount=Sum('total_price'))['sale_amount'] or 0.0
+
+        return total
+
+    data = {
+        "totalOrders": OrderAddress.objects.count(),
+        "newOrders": OrderAddress.objects.filter(order_final_status__isnull=True).count(),
+        "confirmOrders": OrderAddress.objects.filter(order_final_status= 'Order Confirmed').count(),
+        "preparingOrders": OrderAddress.objects.filter(order_final_status= 'Food being Prepared').count(),
+        "deliveredOrders": OrderAddress.objects.filter(order_final_status= 'Order Delivered').count(),
+        "cancelledOrders": OrderAddress.objects.filter(order_final_status= 'Order Cancelled').count(),
+        "pickedOrders": OrderAddress.objects.filter(order_final_status= 'Order Pickup').count(),
+        "totalUsers":User.objects.count(),
+        "totalCategories":Category.objects.count(),
+        "totalReviews":Review.objects.count(),
+        "totalWishlists":Wishlist.objects.count(),
+        "todaySales": get_sales_total(today),
+        "weekSales": get_sales_total(start_week),
+        "monthSales": get_sales_total(start_month),
+        "yearSales": get_sales_total(start_year)
+    }
+    return Response(data)
