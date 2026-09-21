@@ -6,6 +6,21 @@ import '../styles/admin.css'
 
 const AdminLayout = ({ children }) => {
   const [sidebarOpen, setsidebarOpen] = useState(true);
+  const [newOrders, setNewOrders] = useState(0);
+
+
+
+  useEffect(() => {
+    fetch('http://127.0.0.1:8000/api/dashboard-metrics/')
+      .then(res => res.json())
+      .then(data => {
+        setNewOrders(data.newOrders )
+      })
+  }, []);
+
+
+
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
@@ -25,7 +40,7 @@ const AdminLayout = ({ children }) => {
       {sidebarOpen && <AdminSidebar />}
 
       <div id='page-content-wrapper' className={`flex-grow-1 ${sidebarOpen ? 'width-sidebar' : 'full-width'}`}>
-        <AdminHeader toogleSidebar= {toogleSidebar} sidebarOpen={sidebarOpen} />
+        <AdminHeader new_order = {newOrders} toogleSidebar={toogleSidebar} sidebarOpen={sidebarOpen} />
 
         <div className='container-fluid mt-4'>
           {children}

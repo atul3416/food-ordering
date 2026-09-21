@@ -1,7 +1,7 @@
 import React , {useState} from 'react'
 import { FaBell, FaChevronLeft, FaChevronRight, FaSignOutAlt } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
-const AdminHeader = ({toogleSidebar, sidebarOpen}) => {
+const AdminHeader = ({toogleSidebar, sidebarOpen, new_order}) => {
 
     const navigate = useNavigate();
     const handleLogout = ()=>{
@@ -22,10 +22,11 @@ const AdminHeader = ({toogleSidebar, sidebarOpen}) => {
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div className='collapse navbar-collapse'>
-                        <ul className="navbar-nav ms-auto mb-2 mb-lg-0 align-item-center gap-2">
+                        <ul className="navbar-nav ms-auto mb-2 mb-lg-0 align-item-center gap-3">
                             <li className="nav-item">
-                                <button className='btn btn-outline-secondary '>
+                                <button className='btn btn-outline-secondary  '>
                                     <FaBell />
+                                    <span className='badge bg-danger position-absolute'>{new_order}</span>
                                 </button>
                             </li>
                             <li className="nav-item">
