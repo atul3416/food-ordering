@@ -40,6 +40,10 @@ urlpatterns = [
     path('edit-food/<int:id>/',edit_food),
     path('users/', list_users),
     path('delete_user/<int:id>/',delete_user),
-    path('dashboard-metrics/',dashboard_matrics)
+    path('dashboard-metrics/',dashboard_matrics),
+    path('monthly_sales_summary/',monthly_sales_summary),
+    path('top_sale_food/', top_sales_food),
+    path('weekly_sales_summary/',weekly_sales_summary),
+    path('weekly_user_registration/',weekly_register_user),
 
 ]

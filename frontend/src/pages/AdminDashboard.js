@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import AdminLayout from '../components/AdminLayout'
 import '../styles/AdminDashboard.css'
+import SalesBarChart from '../components/SalesBarChart'
+import TopFood from '../components/TopFood'
+import WeekSaleChar from '../components/WeekSaleChar'
+import WeeklyUserChar from '../components/WeeklyUserChar'
 const AdminDashboard = () => {
   const adminUser = localStorage.getItem('adminUser')
   const navigate = useNavigate();
@@ -89,6 +93,25 @@ const AdminDashboard = () => {
 
               </div>
             </div>
+        </div>
+
+        <div className='row mt-4'>
+          <div className='col-md-6'>
+            <SalesBarChart/>
+          </div>
+          <div className='col-md-6'>
+            <TopFood/>
+          </div>
+
+        </div>
+        <div className='row mt-4'>
+          <div className='col-md-6'>
+            <WeekSaleChar/>
+          </div>
+          <div className='col-md-6'>
+            <WeeklyUserChar/>
+          </div>
+
         </div>
       </div>
 

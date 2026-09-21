@@ -478,7 +478,8 @@ def delete_user(request, id):
         return Response({"error":"User not found"}, status=401)
 
 from django.utils.timezone import now, timedelta  
-from django.db.models import Sum,F  
+from django.db.models import Sum,F, DecimalField 
+
 @api_view(['GET'])
 def dashboard_matrics(request):
     today = now().date()
@@ -514,3 +515,84 @@ def dashboard_matrics(request):
         "yearSales": get_sales_total(start_year)
     }
     return Response(data)
+
+from decimal import Decimal
+from collections import defaultdict
+from django.db.models.functions import TruncMonth, Coalesce, TruncWeek
+@api_view(['GET'])
+def monthly_sales_summary(request):
+    #step 1 :-pre-order total = sum(quantity*price)
+
+    orders = Order.objects.filter(is_order_placed=True).values('order_number').annotate(
+            total_price=Coalesce(Sum(F('quantity')*F('food__price'),output_field=DecimalField(max_digits=12,decimal_places=2)),Decimal('0.00'))
+    )
+
+    #step2 :
+    order_price_map={
+        o['order_number']:o['total_price'] for o in orders
+    }
+
+    #step3 : Month resolve(TruncMonth)
+    addresses = (
+        OrderAddress.objects.filter(order_number__in=order_price_map.keys())
+        .annotate(month=TruncMonth('order_time'))
+        .values('month','order_number')
+    )
+
+    #step4 : 
+
+    month_totals = defaultdict(lambda:Decimal('0.00'))
+    for addr in addresses: 
+        label = addr['month'].strftime('%b')
+        month_totals[label] += order_price_map.get(addr['order_number'],Decimal(0.00))
+
+    result = [{"month":m,"sales":total} for m,total in month_totals.items()]
+    return Response(result)
+
+@api_view(['GET'])
+def top_sales_food(request):
+    top_foods=(
+        Order.objects.filter(is_order_placed=True).values('food__item_name').annotate(total_sold=Sum('quantity')).order_by('-total_sold')[:5]
+    )
+
+    return Response(top_foods)
+
+
+@api_view(['GET'])
+def weekly_sales_summary(request):
+    #step 1 :-pre-order total = sum(quantity*price)
+
+    orders = Order.objects.filter(is_order_placed=True).values('order_number').annotate(
+            total_price=Coalesce(Sum(F('quantity')*F('food__price'),output_field=DecimalField(max_digits=12,decimal_places=2)),Decimal('0.00'))
+    )
+
+    #step2 :
+    order_price_map={
+        o['order_number']:o['total_price'] for o in orders
+    }
+
+    #step3 : week resolve(TruncWeek)
+    addresses = (
+        OrderAddress.objects.filter(order_number__in=order_price_map.keys())
+        .annotate(week=TruncWeek('order_time'))
+        .values('week','order_number')
+    )
+
+    #step4 : 
+
+    week_totals = defaultdict(lambda:Decimal('0.00'))
+    for addr in addresses: 
+        label = addr['week'].strftime('Week %W')
+        week_totals[label] += order_price_map.get(addr['order_number'],Decimal(0.00))
+
+    result = [{"week":w,"sales":total} for w,total in week_totals.items()]
+    return Response(result)
+
+from django.db.models import Count
+@api_view(['GET'])
+def weekly_register_user(request):
+    data = (
+        User.objects.annotate(week=TruncWeek('reg_date')).values('week').annotate(new_users = Count('id'))
+    )
+    result = [{'week':entry['week'].strftime('Week %W'), 'new_users':entry["new_users"]} for entry in data]
+    return Response(result)
