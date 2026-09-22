@@ -5,12 +5,14 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { FaMinus, FaPlus, FaShoppingCart, FaTrash } from 'react-icons/fa'
+import { useCart } from '../context/CartContext'
 
 
 const Cart = () => {
     const userId = localStorage.getItem("userId");
     const [cartItems, setCartItems] = useState([]);
     const [grandTotal, setGrandTotal] = useState(0);
+    const {setCartCount} = useCart();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -79,6 +81,7 @@ const Cart = () => {
                     return sum + item.food.price * item.quantity;
                 }, 0)
                 setGrandTotal(total);
+                setCartCount(data.length);
             }
             else{
                 console.log("not found");
