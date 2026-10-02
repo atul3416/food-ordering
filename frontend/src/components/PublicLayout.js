@@ -52,7 +52,7 @@ const PublicLayout = ({ children }) => {
                 <Link className="nav-link " to="/"><FaHome className='me-1' /> Home</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="#"><FaUtensils className='me-1' /> Menu</Link>
+                <Link className="nav-link" to="/food-menu"><FaUtensils className='me-1' /> Menu</Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="#"><FaTruck className='me-1' /> Track</Link>

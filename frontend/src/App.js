@@ -29,6 +29,7 @@ import EditCategory from './pages/EditCategory';
 import EditFood from './pages/EditFood';
 import ManageUsers from './pages/ManageUsers';
 import { CartProvider } from './context/CartContext';
+import Foodlist from './pages/Foodlist';
 function App() {
   return (
     <CartProvider>
@@ -66,6 +67,7 @@ function App() {
             <Route path='profile/' element={<Profile />}></Route>
             <Route path='change-password/' element={<ChangePass />}></Route>
             <Route path='manage-users/' element={<ManageUsers />}></Route>
+            <Route path='food-menu/' element={<Foodlist />}></Route>
 
           </Route>
         </Routes>
