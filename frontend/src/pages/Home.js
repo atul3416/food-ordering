@@ -1,11 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useDebugValue, useEffect, useState } from 'react'
 import { FaHome, FaPlus, FaSignInAlt, FaTruck, FaUserPlus, FaUserShield, FaUtensils } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import PublicLayout from '../components/PublicLayout'
 import '../styles/home.css'
+import { useWishlist } from '../context/WishlistContext'
 
 const Home = () => {
   const [foods, setFoods] = useState([]);
+
+  const [wishlist, setWishlist] = useState([]);
+  const userId = localStorage.getItem('userId')
+
+  const { wishlistCount, setWishlistCount } = useWishlist();
+
   useEffect(() => {
 
     fetch(`http://127.0.0.1:8000/api/random_foods/`)
@@ -15,6 +22,57 @@ const Home = () => {
       })
 
   }, []);
+  useEffect(() => {
+
+
+    if (userId) {
+      fetch(`http://127.0.0.1:8000/api/wishlist/${userId}/`)
+        .then(res => res.json())
+        .then(data => {
+          const wishlistIds = data.map(item => item.food_id)
+          setWishlist(wishlistIds)
+        })
+    }
+
+  }, [userId]);
+
+
+  const toggleWishlist = async (foodId) => {
+    if (!userId) {
+      alert("Please log in to user wishlist")
+      return;
+    }
+
+    const isWishlisted = wishlist.includes(foodId);
+
+    const endpoint = isWishlisted ? 'remove' : 'add';
+
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/wishlist/${endpoint}/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user_id: userId,
+          food_id: foodId
+        })
+      })
+
+      if (response.ok) {
+        setWishlist(prev => isWishlisted ? prev.filter(id => id !== foodId) : [...prev, foodId]);
+        const updatedCount = await fetch(`http://127.0.0.1:8000/api/wishlist/${userId}`);
+        const wishlistData = await updatedCount.json();
+        setWishlistCount(wishlistData.length);
+        alert(isWishlisted ? "Removed from wishlist" : "Add to Wishlist");
+      }
+
+      else {
+        alert("Failed to update wishlist")
+      }
+    }
+    catch (error) {
+      alert("something went wrong")
+    }
+  }
   return (
     <PublicLayout>
       <section className=' hero py-5 text-center' style={{ backgroundImage: "url('/images/foodimage.jpg')" }}>
@@ -38,7 +96,10 @@ const Home = () => {
 
                 <div className='col-md-4 mb-4'>
                   <div className='card hover-effect'>
-                    <img src={`http://127.0.0.1:8000${food.image}`} className='card-img-top' style={{ height: '180px' }} />
+                    <div className='position-relative'>
+                      <img src={`http://127.0.0.1:8000${food.image}`} className='card-img-top' style={{ height: '180px' }} />
+                      <i className={`${wishlist.includes(food.id) ? "fas" : "far"} fa-heart wishlist position-absolute top-0 end-0 m-2 text-danger`} onClick={() => toggleWishlist(food.id)}></i>
+                    </div>
                     <div className='card-body'>
                       <h5 className='card-title'>
                         <Link> {food.item_name} </Link>
@@ -98,7 +159,7 @@ const Home = () => {
       <section className='py-5 bg-warning text-center text-dark'>
         <h4>Ready to Satify your hunger?</h4>
         <Link to="#" className='btn btn-dark btn-lg mt-4'>
-        Browse Full Menu
+          Browse Full Menu
         </Link>
       </section>
 

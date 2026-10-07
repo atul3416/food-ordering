@@ -89,3 +89,15 @@ class FoodTrackingSerializer(serializers.ModelSerializer):
     class Meta:
         model = FoodTracking
         fields = '__all__'
+
+
+
+class WishlistSerializer(serializers.ModelSerializer):
+    item_name = serializers.CharField(source='food.item_name')
+    item_price = serializers.CharField(source='food.price')
+    item_description = serializers.CharField(source='food.item_description')
+    item_image = serializers.ImageField(source='food.image')
+    is_available = serializers.CharField(source='food.is_available')
+    class Meta:
+        model = Wishlist
+        fields = ['food_id','item_name','item_price','item_description','item_image','is_available']

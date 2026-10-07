@@ -4,6 +4,8 @@ import PublicLayout from '../components/PublicLayout'
 import '../styles/home.css'
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css';
+
+import { useWishlist } from '../context/WishlistContext'
 const Foodlist = () => {
     const [foods, setFoods] = useState([]);
     const [filteredFoods, setfilteredFoods] = useState([]);
@@ -35,6 +37,60 @@ const Foodlist = () => {
 
     }, []);
 
+
+    const [wishlist, setWishlist] = useState([]);
+    const userId = localStorage.getItem('userId')
+    const { wishlistCount, setWishlistCount } = useWishlist();
+    useEffect(() => {
+
+        if (userId) {
+            fetch(`http://127.0.0.1:8000/api/wishlist/${userId}/`)
+                .then(res => res.json())
+                .then(data => {
+                    const wishlistIds = data.map(item => item.food_id)
+                    setWishlist(wishlistIds)
+                })
+        }
+
+    }, [userId]);
+
+
+    const toggleWishlist = async (foodId) => {
+        if (!userId) {
+            alert("Please log in to user wishlist")
+            return;
+        }
+
+        const isWishlisted = wishlist.includes(foodId);
+
+        const endpoint = isWishlisted ? 'remove' : 'add';
+
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/wishlist/${endpoint}/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: userId,
+                    food_id: foodId
+                })
+            })
+
+            if (response.ok) {
+                setWishlist(prev => isWishlisted ? prev.filter(id => id !== foodId) : [...prev, foodId]);
+                const updatedCount = await fetch(`http://127.0.0.1:8000/api/wishlist/${userId}`);
+                const wishlistData = await updatedCount.json();
+                setWishlistCount(wishlistData.length);
+                alert(isWishlisted ? "Removed from wishlist" : "Add to Wishlist");
+            }
+
+            else {
+                alert("Failed to update wishlist")
+            }
+        }
+        catch (error) {
+            alert("something went wrong")
+        }
+    }
 
     const applyFilters = (searchFood, category) => {
         let result = foods;
@@ -122,6 +178,7 @@ const Foodlist = () => {
                                 <div className='col-md-4 mb-4'>
                                     <div className='card hover-effect'>
                                         <img src={`http://127.0.0.1:8000${food.image}`} className='card-img-top' style={{ height: '180px' }} />
+                                         <i className={`${wishlist.includes(food.id) ? "fas" : "far"} fa-heart wishlist position-absolute top-0 end-0 m-2 text-danger`} onClick={() => toggleWishlist(food.id)}></i>
                                         <div className='card-body'>
                                             <h5 className='card-title'>
                                                 <Link> {food.item_name} </Link>
@@ -148,28 +205,28 @@ const Foodlist = () => {
 
                     </div>
                 </div>
-                
+
                 {totalPages > 1 && (
                     <nav className='mt-4 d-flex justify-content-center'>
                         <ul className='pagination'>
                             <li className={`page-item ${currentPage === 1 && 'disabled'}`}>
-                                <button className='page-link' onClick={()=>paginate(1)}>First</button>
+                                <button className='page-link' onClick={() => paginate(1)}>First</button>
                             </li>
                             <li className={`page-item ${currentPage === 1 && 'disabled'}`}>
-                                <button className='page-link' onClick={()=>paginate(currentPage-1)}>Prev</button>
+                                <button className='page-link' onClick={() => paginate(currentPage - 1)}>Prev</button>
                             </li>
                             <li className='page-item disabled'>
                                 <button className='page-link'>Page {currentPage} of {totalPages} </button>
                             </li>
-                            
+
                             <li className={`page-item ${currentPage === totalPages && 'disabled'}`}>
-                                <button className='page-link' onClick={()=>paginate(currentPage+1)}>Next </button>
+                                <button className='page-link' onClick={() => paginate(currentPage + 1)}>Next </button>
                             </li>
-                            
+
                             <li className={`page-item ${currentPage === totalPages && 'disabled'}`}>
-                                <button className='page-link' onClick={()=>paginate(totalPages)}>Last</button>
+                                <button className='page-link' onClick={() => paginate(totalPages)}>Last</button>
                             </li>
-                            
+
                         </ul>
 
                     </nav>

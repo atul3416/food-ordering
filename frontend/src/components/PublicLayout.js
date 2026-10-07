@@ -3,11 +3,14 @@ import { FaCogs, FaHeart, FaHome, FaPlus, FaShoppingCart, FaSignInAlt, FaSignOut
 import { Link, useNavigate } from 'react-router-dom'
 import '../styles/layout.css'
 import { useCart } from '../context/CartContext'
+import { useWishlist } from '../context/WishlistContext'
 
 const PublicLayout = ({ children }) => {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
   const { cartCount, setCartCount } = useCart();
+
+  const {wishlistCount, setWishlistCount} = useWishlist();
 
 
   const navigate = useNavigate();
@@ -22,11 +25,20 @@ const PublicLayout = ({ children }) => {
       }
   }
 
+  const fetchWishlistCount = async ()=>{
+      if(userId){
+        const res = await fetch(`http://127.0.0.1:8000/api/wishlist/${userId}`);
+        const data = await res.json();
+        setWishlistCount(data.length);
+      }
+  }
+
   useEffect(() => {
     if (userId) {
       setLoggedIn(true);
       setUserName(uName);
       fetchCartCount();
+      fetchWishlistCount();
     }
   }, [userId])
 
@@ -35,12 +47,13 @@ const PublicLayout = ({ children }) => {
     localStorage.removeItem("userName");
     setLoggedIn(false);
     setCartCount(0);
+    setWishlistCount(0);
     navigate("/login");
   }
 
   return (
     <div>
-      <nav className="navbar navbar-expand-lg navbar-dark " style={{ backgroundColor: "rgba(11, 4, 4, 0.76)" }}>
+      <nav className="navbar navbar-expand-lg navbar-dark sticky-top" style={{ backgroundColor: "rgba(11, 4, 4, 0.76)" }}>
         <div className="container-fluid">
           <Link className="navbar-brand fw-bold" to="#"><FaUtensils className='me-2' /> Food Ordering System</Link>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
@@ -83,7 +96,11 @@ const PublicLayout = ({ children }) => {
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/admin-login"><FaHeart className='me-1' /> Wishlist</Link>
+                    <Link className="nav-link" to="/wishlist"><FaHeart className='me-1' /> Wishlist
+                     {wishlistCount>0 && (
+                      <span>({wishlistCount})</span>
+                    )}
+                    </Link>
                   </li>
 
                   <li class="nav-item dropdown">

@@ -29,9 +29,14 @@ import EditCategory from './pages/EditCategory';
 import EditFood from './pages/EditFood';
 import ManageUsers from './pages/ManageUsers';
 import { CartProvider } from './context/CartContext';
+import { WishlistProvider } from './context/WishlistContext';
 import Foodlist from './pages/Foodlist';
+import Wishlist from './pages/Wishlist';
 function App() {
   return (
+    <WishlistProvider>
+
+    
     <CartProvider>
 
 
@@ -68,11 +73,13 @@ function App() {
             <Route path='change-password/' element={<ChangePass />}></Route>
             <Route path='manage-users/' element={<ManageUsers />}></Route>
             <Route path='food-menu/' element={<Foodlist />}></Route>
+            <Route path='wishlist/' element={<Wishlist />}></Route>
 
           </Route>
         </Routes>
       </BrowserRouter>
     </CartProvider>
+    </WishlistProvider>
   );
 }
 

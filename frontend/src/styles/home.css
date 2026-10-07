@@ -23,3 +23,18 @@ input::placeholder{
     transition: 0.1s ease;
     box-shadow: 0 3px 15px rgba(0,0,0,0.5);
 }
+
+.wishlist{
+    cursor: pointer;
+   background-color: white;
+   width: 1.5rem;
+   aspect-ratio: 1/1;
+    padding-top: 4px;
+   border-radius: 50%;
+    transition: 0.2s ease;
+}
+
+.wishlist:hover{
+    transform: scale(1.2);
+    background-color: unset;
+}
