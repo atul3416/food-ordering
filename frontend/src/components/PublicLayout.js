@@ -53,7 +53,7 @@ const PublicLayout = ({ children }) => {
 
   return (
     <div>
-      <nav className="navbar navbar-expand-lg navbar-dark sticky-top" style={{ backgroundColor: "rgba(11, 4, 4, 0.76)" }}>
+      <nav className="navbar navbar-expand-lg navbar-dark sticky-top " >
         <div className="container-fluid">
           <Link className="navbar-brand fw-bold" to="#"><FaUtensils className='me-2' /> Food Ordering System</Link>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
@@ -68,7 +68,7 @@ const PublicLayout = ({ children }) => {
                 <Link className="nav-link" to="/food-menu"><FaUtensils className='me-1' /> Menu</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="#"><FaTruck className='me-1' /> Track</Link>
+                <Link className="nav-link" to="/track"><FaTruck className='me-1' /> Track</Link>
               </li>
 
               {!isLoggedIn ? (

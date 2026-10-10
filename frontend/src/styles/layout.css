@@ -5,7 +5,11 @@
 
 }
 .navbar{
-  background-color: azure;
+   background-color: rgb(78, 70, 70);
+    /* background-color: rgba(11, 4, 4, 0.76); */
+   
+   overflow: hidden;
+  
 }
 .navbar-brand:hover{
     color: #ffc107 !important ;

@@ -47,6 +47,7 @@ urlpatterns = [
     path('weekly_user_registration/',weekly_register_user),
     path('wishlist/add/', add_wishlist),
     path('wishlist/<int:user_id>/',get_wishlist),
-    path('wishlist/remove/', remove_wishlist)
+    path('wishlist/remove/', remove_wishlist),
+    path('track_order/<str:order_number>/', track_order)
 
 ]
